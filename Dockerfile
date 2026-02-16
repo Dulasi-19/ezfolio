@@ -1,3 +1,10 @@
+# Stage 1: Build Assets
+FROM node:14 AS asset-builder
+WORKDIR /app
+COPY . .
+RUN npm install && npm run prod
+
+# Stage 2: PHP Environment
 FROM php:8.0-fpm
 
 # Install system dependencies
@@ -23,17 +30,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy existing application directory contents
+# Copy existing application contents
 COPY . /var/www
+# Copy built assets from the previous stage
+COPY --from=asset-builder /app/public /var/www/public
 
-# Install dependencies
+# Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-dev
-
-# Install Node.js for assets
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install \
-    && npm run prod
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
@@ -46,3 +49,4 @@ EXPOSE 80
 
 # Start nginx and php-fpm
 CMD service nginx start && php-fpm
+
