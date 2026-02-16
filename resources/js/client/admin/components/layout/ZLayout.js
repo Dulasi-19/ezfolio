@@ -6,13 +6,13 @@ import Routes from '../../../common/helpers/Routes';
 import PropTypes from 'prop-types';
 import Utils from '../../../common/helpers/Utils';
 import {
-  HomeOutlined,
-  FileTextOutlined,
-  ExperimentOutlined,
-  ControlOutlined,
-  TeamOutlined,
-  MailOutlined,
-  ThunderboltOutlined,
+    HomeOutlined,
+    FileTextOutlined,
+    ExperimentOutlined,
+    ControlOutlined,
+    TeamOutlined,
+    MailOutlined,
+    ThunderboltOutlined,
 } from '@ant-design/icons';
 import { message } from 'antd';
 import NavContent from './NavContent';
@@ -43,21 +43,21 @@ const ZLayout = ({ children }) => {
         });
 
         axios.get(Routes.web.frontend.optimize, {
-            headers: { 
+            headers: {
                 Accept: 'application/json'
             }
         })
-        .then(response => {
-            Utils.handleSuccessResponse(response, () => {
-                message.success({ 
-                    content: response.data.message, 
-                    key: 'optimize'
-                });
+            .then(response => {
+                Utils.handleSuccessResponse(response, () => {
+                    message.success({
+                        content: response.data.message,
+                        key: 'optimize'
+                    });
+                })
             })
-        })
-        .catch((error) => {
-            Utils.handleException(error);
-        });
+            .catch((error) => {
+                Utils.handleException(error);
+            });
     }
 
     const defaultProps = {
@@ -125,27 +125,27 @@ const ZLayout = ({ children }) => {
                     path: Routes.web.admin.visitors,
                     key: Routes.web.admin.visitors,
                     name: 'Visitor',
-                    icon: <TeamOutlined/>,
+                    icon: <TeamOutlined />,
                 },
                 {
                     path: Routes.web.admin.messages,
                     key: Routes.web.admin.messages,
                     name: 'Message',
-                    icon: <MailOutlined/>,
+                    icon: <MailOutlined />,
                 },
                 {
                     path: Routes.web.frontend.optimize,
                     key: Routes.web.frontend.optimize,
                     name: 'Optimize',
                     onclickHandle: optimizeOnClick,
-                    icon: <ThunderboltOutlined/>,
+                    icon: <ThunderboltOutlined />,
                 },
                 {
                     path: Routes.web.admin.systemLogs,
                     key: Routes.web.admin.systemLogs,
                     name: 'System Logs',
                     onclickHandle: () => { window.open(Routes.web.admin.systemLogs) },
-                    icon: <FileTextOutlined/>,
+                    icon: <FileTextOutlined />,
                 },
                 {
                     path: Routes.web.admin.settings,
@@ -160,7 +160,7 @@ const ZLayout = ({ children }) => {
     const navigateToPath = (path) => {
         history.push(path);
     }
-    
+
     return (
         <React.Fragment>
             <div
@@ -189,7 +189,7 @@ const ZLayout = ({ children }) => {
                             {dom}
                         </a>
                     )}
-                    rightContentRender={() => <NavContent/>}
+                    rightContentRender={() => <NavContent />}
                     breadcrumbRender={() => ('')}
                 >
                     {children}

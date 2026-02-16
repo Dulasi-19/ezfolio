@@ -5,7 +5,7 @@ import enUSIntl from 'antd/lib/locale/en_US';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Routes from '../../common/helpers/Routes';
 import SuspenseErrorBoundary from '../../common/components/SuspenseErrorBoundary';
-import {ErrorBoundaryFallbackUI} from '../../common/components/ErrorBoundaryFallbackUI';
+import { ErrorBoundaryFallbackUI } from '../../common/components/ErrorBoundaryFallbackUI';
 import '../../common/assets/css/app.css';
 import ReactRoutes from '../../common/helpers/ReactRoutes';
 import { Provider, useDispatch } from 'react-redux';
@@ -28,11 +28,11 @@ const store = ConfigureStore();
  * @param int speed in millisecond
  */
 const fadeoutAndRemoveElement = (el, speed) => {
-    var seconds = speed/1000;
-    el.style.transition = "opacity "+seconds+"s ease";
+    var seconds = speed / 1000;
+    el.style.transition = "opacity " + seconds + "s ease";
 
     el.style.opacity = 0;
-    setTimeout(function() {
+    setTimeout(function () {
         el.parentNode.removeChild(el);
     }, speed);
 }
@@ -43,7 +43,7 @@ const fadeoutAndRemoveElement = (el, speed) => {
 const publicRoutes = () => {
     return ReactRoutes.admin.filter(route => route.private === false).map((route, index) => (
         <Route key={index} exact={route.exact} path={route.path}>
-            <route.component fallback={<LazyLoadingFallbackUi/>}/>
+            <route.component fallback={<LazyLoadingFallbackUi />} />
         </Route>
     ));
 }
@@ -54,7 +54,7 @@ const publicRoutes = () => {
 const privateRoutes = () => {
     return ReactRoutes.admin.filter(route => route.private === true).map((route, index) => (
         <Route key={index} exact={route.exact} path={route.path}>
-            <route.component fallback={<LazyLoadingFallbackUi spinner={true}/>}/>
+            <route.component fallback={<LazyLoadingFallbackUi spinner={true} />} />
         </Route>
     ));
 }
@@ -77,7 +77,7 @@ const App = () => {
     let mySettings = settings;
 
     const apiToken = (localStorage.getItem("apiToken") !== 'undefined' && localStorage.getItem("apiToken") !== null) ? localStorage.getItem("apiToken") : null;
-    
+
     dispatch(initializeGlobalState({
         apiToken: apiToken,
         accentColor: mySettings.accentColor,
@@ -93,12 +93,12 @@ const App = () => {
         cover: mySettings.cover,
     }));
 
-    useEffect(()=> {
+    useEffect(() => {
         //remove preloader
         let preloader = document.getElementById("szn-preloader");
-        
+
         if (preloader) {
-             fadeoutAndRemoveElement(preloader, 1000);
+            fadeoutAndRemoveElement(preloader, 1000);
         }
 
         Utils.changeAccentColor(mySettings.accentColor);
@@ -106,13 +106,13 @@ const App = () => {
         setupInterceptors(store);
     }, []);
 
-	return (
-		<React.Fragment>
-            <SuspenseErrorBoundary fallback={<ErrorBoundaryFallbackUI/>}>
+    return (
+        <React.Fragment>
+            <SuspenseErrorBoundary fallback={<ErrorBoundaryFallbackUI />}>
                 <ConfigProvider locale={enUSIntl}>
                     <BrowserRouter>
                         <Switch>
-                            
+
                             {/* public routes */}
                             {publicRoutes()}
 
@@ -122,7 +122,7 @@ const App = () => {
                                     <Switch>
                                         {privateRoutes()}
                                         <Route>
-                                            <NotFound/>
+                                            <NotFound />
                                         </Route>
                                     </Switch>
                                 </ZLayout>
@@ -130,25 +130,25 @@ const App = () => {
 
                             {/* 404 route */}
                             <Route>
-                                <NotFound/>
+                                <NotFound />
                             </Route>
                             <Route path={Routes.web.admin.notFound}>
-                                <NotFound/>
+                                <NotFound />
                             </Route>
-                            
+
                         </Switch>
                     </BrowserRouter>
                 </ConfigProvider>
             </SuspenseErrorBoundary>
         </React.Fragment>
-	);
+    );
 }
 
 if (document.getElementById('react-root')) {
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
-                <App/>
+                <App />
             </Provider>
         </React.StrictMode>,
         document.getElementById('react-root')

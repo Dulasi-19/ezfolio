@@ -1,7 +1,7 @@
 import Types from "../Types";
 
 export const initialState = {
-    
+
 }
 
 export const GlobalReducer = (state = initialState, action) => {
@@ -11,16 +11,16 @@ export const GlobalReducer = (state = initialState, action) => {
             return state;
         }
         case Types.SET_GLOBAL_STATE: {
-            return { 
-                ...state, 
+            return {
+                ...state,
                 ...action.payload
             };
         }
         case Types.SAVE_API_TOKEN: {
-            const {apiToken} = action.payload;
+            const { apiToken } = action.payload;
             localStorage.setItem('apiToken', apiToken);
             state.apiToken = apiToken;
-            
+
             return state;
         }
         case Types.REMOVE_API_TOKEN: {

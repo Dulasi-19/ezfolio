@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Image, Row, Col, notification, Radio, Space } from 'antd';
+import { Image, Row, Col, notification, Radio, Space } from 'antd';
 import '../../common/assets/css/projects.css';
 import ProjectPopup from '../components/ProjectPopup';
 import Routes from '../../common/helpers/Routes';
@@ -9,14 +9,6 @@ import Utils from '../../common/helpers/Utils';
 
 const accentColor = document.querySelector('[data-accentcolor]') ? document.querySelector('[data-accentcolor]').dataset.accentcolor : null;
 const demoMode = document.querySelector('[data-demomode]') ? document.querySelector('[data-demomode]').dataset.demomode : false;
-
-const thumbnailStyle = {
-    height: '150px',
-    width: '100%',
-    transition: '0.3s ease',
-    // filter: 'opacity(0.8)',
-    objectFit: 'cover'
-}
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -38,7 +30,7 @@ function App() {
                 message: (
                     <div className="text-center">
                         <a target="_blank" rel="noreferrer" href="https://github.com/arifszn/ezfolio">
-                            <img src="https://img.shields.io/github/stars/arifszn/ezfolio?style=social" alt="Github Star"/>
+                            <img src="https://img.shields.io/github/stars/arifszn/ezfolio?style=social" alt="Github Star" />
                         </a>
                     </div>
                 ),
@@ -65,27 +57,27 @@ function App() {
         HTTP.get(Routes.api.frontend.projects, {
             isPrivate: false
         })
-        .then(response => {
-            Utils.handleSuccessResponse(response, () => {
-                setData(response.data.payload);
+            .then(response => {
+                Utils.handleSuccessResponse(response, () => {
+                    setData(response.data.payload);
 
-                if (response.data.payload.length) {
-                    let newCategories = [...categories];
-                    response.data.payload.forEach(row => {
-                        JSON.parse(row.categories).map((category) => {
-                            newCategories.push(category);
-                        })
-                    });
-                    setCategories([...new Set(newCategories)]);
-                }
+                    if (response.data.payload.length) {
+                        let newCategories = [...categories];
+                        response.data.payload.forEach(row => {
+                            JSON.parse(row.categories).map((category) => {
+                                newCategories.push(category);
+                            })
+                        });
+                        setCategories([...new Set(newCategories)]);
+                    }
+                })
             })
-        })
-        .catch(error => {
-            Utils.handleException(error);
-        })
-        .finally(() => {
-            setLoading(false);
-        });
+            .catch(error => {
+                Utils.handleException(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }
 
     return (
@@ -93,7 +85,7 @@ function App() {
             <Row>
                 <Col span={24}>
                     <Row>
-                        <Col span={24} className="text-center" style={{marginBottom: '24px'}}>
+                        <Col span={24} className="text-center" style={{ marginBottom: '24px' }}>
                             {
                                 (categories.length !== 0) && (
                                     <div data-aos="zoom-in">
@@ -107,7 +99,7 @@ function App() {
                                             <Radio.Button>All</Radio.Button>
                                             {
                                                 categories.map((category, index) => (
-                                                    <Radio.Button key={index} value={category} style={{textTransform: 'capitalize'}}>{category}</Radio.Button>
+                                                    <Radio.Button key={index} value={category} style={{ textTransform: 'capitalize' }}>{category}</Radio.Button>
                                                 ))
                                             }
                                         </Radio.Group>
@@ -121,46 +113,40 @@ function App() {
                                     data.filter(project => selectedCategory === null || (selectedCategory !== null && JSON.parse(project.categories).includes(selectedCategory))).map((item, index) => (
                                         <Col
                                             key={index}
-                                            xl={6}
-                                            lg={6}
+                                            xl={8}
+                                            lg={8}
                                             md={12}
                                             sm={24}
                                             xs={24}
-                                            data-aos="fade-up" 
+                                            data-aos="fade-up"
                                             data-aos-anchor-placement="top-bottom"
-                                            style={{marginBottom: '24px'}}
                                         >
-                                            <Card
-                                                onClick={() => {
-                                                    setSelectedProject(item);
-                                                    setModalVisible(true);
-                                                }}
-                                                loading={loading}
-                                                bodyStyle={{padding: '14px'}}
-                                                hoverable
-                                                className={'z-hover z-shadow'}
-                                                bordered={false}
-                                                cover={
-                                                    <div style={{opacity: '0.7'}}>
-                                                        <Image
-                                                            width='100%'
-                                                            src={Utils.backend + '/' + item.thumbnail}
-                                                            style={thumbnailStyle}
-                                                            preview={false}
-                                                            placeholder={true}
-                                                        />
+                                            <div className="flip-card" onClick={() => {
+                                                setSelectedProject(item);
+                                                setModalVisible(true);
+                                            }}>
+                                                <div className="flip-card-inner">
+                                                    <div className="flip-card-front">
+                                                        <div className="project-image-wrapper">
+                                                            <Image
+                                                                width='100%'
+                                                                height='100%'
+                                                                src={Utils.backend + '/' + item.thumbnail}
+                                                                style={{ objectFit: 'cover' }}
+                                                                preview={false}
+                                                                placeholder={true}
+                                                                loading={loading}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                }
-                                                actions={[
-                                                    <React.Fragment key="view">
-                                                        See Details
-                                                    </React.Fragment>
-                                                ]}
-                                            >
-                                                <Card.Meta
-                                                    title={item.title}
-                                                />
-                                            </Card>
+                                                    <div className="flip-card-back">
+                                                        <h3>{item.title}</h3>
+                                                        <div className="flip-card-btn">
+                                                            See Details
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </Col>
                                     ))
                                 }
@@ -188,10 +174,10 @@ function App() {
 }
 
 if (document.getElementById('react-project-root')) {
-   ReactDOM.render(
+    ReactDOM.render(
         <React.StrictMode>
             <App />
         </React.StrictMode>,
         document.getElementById('react-project-root')
-    ); 
+    );
 }
