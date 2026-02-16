@@ -47,6 +47,6 @@ COPY docker/nginx.conf /etc/nginx/sites-available/default
 # Expose port
 EXPOSE 80
 
-# Start nginx and php-fpm
-CMD service nginx start && php-fpm
+# Start php-fpm in background and nginx in foreground
+CMD php-fpm -D && nginx -g 'daemon off;'
 
